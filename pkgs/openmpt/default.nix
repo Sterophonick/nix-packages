@@ -27,6 +27,20 @@ stdenv.mkDerivation {
 
   sourceRoot = "source";
 
+  desktopItems = [
+    (makeDesktopItem rec {
+      name = "OpenMPT";
+      desktopName = "OpenMPT";
+      exec = "openmpt";
+      icon = "openmpt";
+      type = "Application";
+      comment = "Open-source audio module tracker";
+      categories = [ "Audio" "Sequencer" "Midi" "AudioVideoEditing" "Music" "AudioVideo" ];
+      mimeTypes = [ "audio/x-mod" "audio/x-s3m" "audio/x-xm" "audio/x-it" "audio/x-mptm" ];
+    })
+  ];
+
+
   installPhase = ''
     mkdir -p $out/bin $out/share/openmpt $out/share/pixmaps $out/share/mime/application/ $out/share/applications
 
@@ -54,19 +68,6 @@ stdenv.mkDerivation {
 
     copyDesktopItems
   '';
-
-  desktopItems = [
-    (makeDesktopItem rec {
-      name = "OpenMPT";
-      desktopName = "OpenMPT";
-      exec = "openmpt";
-      icon = "openmpt";
-      type = "Application";
-      comment = "Open-source audio module tracker";
-      categories = [ "Audio" "Sequencer" "Midi" "AudioVideoEditing" "Music" "AudioVideo" ];
-      # mimeType = [ "audio/x-mod" "audio/x-s3m" "audio/x-xm" "audio/x-it" "audio/x-mptm" ];
-    })
-  ];
 
   meta = with lib; {
     description = "Open-source audio module tracker";
