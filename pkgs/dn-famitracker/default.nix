@@ -36,13 +36,13 @@ stdenv.mkDerivation rec {
       type = "Application";
       comment = "Fork of 0cc-FamiTracker (a NES tracker) that incorporates numerous fixes and features.";
       categories = [ "Audio" "Sequencer" "Midi" "AudioVideoEditing" "Music" "AudioVideo" ];
-      # mimeTypes = [ "audio/x-famitracker" "audio/x-dnfamitracker" ];
+      mimeTypes = [ "audio/x-famitracker" "audio/x-dnfamitracker" ];
       # TODO: file associations (somehow)
     })
   ];
 
   installPhase = ''
-    mkdir -p $out $out/bin $out/share/dn-famitracker $out/share/pixmaps
+    mkdir -p $out $out/bin $out/share/dn-famitracker $out/share/pixmaps $out/share/mime/packages/
 
     7z x "${src}" -o$out/share/dn-famitracker/
 
@@ -58,6 +58,24 @@ stdenv.mkDerivation rec {
     mv $out/share/pixmaps/dn-famitracker-8.png $out/share/pixmaps/temp.png
     rm $out/share/pixmaps/dn-famitracker*.png
     mv $out/share/pixmaps/temp.png $out/share/pixmaps/dn-famitracker.png
+
+    cat <<EOT >> $out/share/mime/packages/dn-famitracker.xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+      <mime-type type="audio/x-famitracker">
+        <glob pattern="*.ftm"/>
+        <glob pattern="*.FTM"/>
+        <comment>FamiTracker Module</comment>
+        <icon name="dn-famitracker"/>
+      </mime-type>
+      <mime-type type="audio/x-dnfamitracker">
+        <glob pattern="*.dnm"/>
+        <glob pattern="*.DNM"/>
+        <comment>Dn-FamiTracker Module</comment>
+        <icon name="dn-famitracker"/>
+      </mime-type>
+    </mime-info>
+    EOT
 
     copyDesktopItems
   '';

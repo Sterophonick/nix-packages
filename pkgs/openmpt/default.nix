@@ -42,9 +42,9 @@ stdenv.mkDerivation {
 
 
   installPhase = ''
-    mkdir -p $out/bin $out/share/openmpt $out/share/pixmaps $out/share/mime/application/ $out/share/applications
+    mkdir -p $out/bin $out/share/openmpt $out/share/pixmaps $out/share/mime/packages/ $out/share/applications
 
-    cp -vr * $out/share/openmpt
+    cp -r * $out/share/openmpt
 
     convert OpenMPT\ File\ Icon.ico $out/share/pixmaps/openmpt.png
     mv $out/share/pixmaps/openmpt-2.png $out/share/pixmaps/temp.png
@@ -59,11 +59,16 @@ stdenv.mkDerivation {
     EOT
     chmod +x $out/bin/openmpt
 
-    cat <<EOT >> $out/share/mime/application/x-mptm.xml
-    <mime-type type="audio/x-mptm">
-      <glob pattern="*.mptm"/>
-      <comment>OpenMPT Module</comment>
-    </mime-type>
+    cat <<EOT >> $out/share/mime/packages/openmpt.xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+      <mime-type type="audio/x-mptm">
+        <glob pattern="*.mptm"/>
+        <glob pattern="*.MPTM"/>
+        <comment>OpenMPT Module</comment>
+        <icon name="openmpt"/>
+      </mime-type>
+    </mime-info>
     EOT
 
     copyDesktopItems
